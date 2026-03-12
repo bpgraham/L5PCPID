@@ -1,0 +1,80 @@
+// Run example simulations of Bahl model
+// BPG 12-3-26
+
+//====================== cvode =======================================
+objref cvode
+cvode = new CVode()
+cvode.active(0)
+//cvode.active(1)		// BPG: variable time step much faster but affects spikes!
+
+load_file("./init_models_with_ca/init_model2.hoc")
+//load_file("./init_models_with_ca/init_model2_hl.hoc")	// use this to include Ih with extra leak
+//load_file("./init_models_without_ca/init_model2.hoc")
+
+
+// Somatic and dendritic OU noise
+objref iOUs, iOUd
+
+soma iOUs = new IOU(0.5)
+iOUs.mean_i = 0
+iOUs.std_i = 0.1	// sufficiently noisy
+iOUs.tau_i = 3
+tuft iOUd = new IOU(0.5)
+iOUd.mean_i = 0
+iOUd.std_i = 0.1
+iOUd.tau_i = 3
+
+
+// Excitatory inputs
+objref Ain, Bin	// apical and basal (soma) inputs
+
+// BPG: epsp.mod taken from Galloni code base
+tuft Ain = new epsp(0.5)
+Ain.onset = 100
+Ain.tau0 = 0.5
+Ain.tau1 = 5
+Ain.imax = 0.7
+
+soma Bin = new IClamp(0.5)
+Bin.del = 100
+Bin.dur = 10	
+Bin.amp = 0.5
+
+
+// Inhibitory inputs
+objref Ainhib, Binhib, AIcl, BIcl	// basal and tuft inhibition (conductance and current clamps)
+
+// inhibitory conductance in tuft in first (proximal) compartment
+tuft Ainhib = new gclamp(0.25)
+Ainhib.gmax = 0.0	// uS
+//Ainhib.gmax = 0.01	// uS
+//Ainhib.gmax = 0.007	// uS
+Ainhib.g = 1	// fixed scaling
+Ainhib.e = -75	// mV
+
+// inhibitory conductance in basal compartment
+basal Binhib = new gclamp(0.25)
+Binhib.gmax = 0.0	// uS
+//Binhib.gmax = 0.01	// uS
+//Binhib.gmax = 0.007	// uS
+Binhib.g = 1	// fixed scaling
+Binhib.e = -75	// mV
+
+// inhibitory current in tuft in first (proximal) compartment
+// Setup to produce hyperpolarising step before excitatory inputs, turning Ih on
+tuft AIcl = new IClamp(0.25)
+AIcl.del = 30
+AIcl.dur = 50
+//AIcl.amp = -1
+AIcl.amp = 0
+
+// inhibitory current in soma compartment
+// Setup to produce hyperpolarising step before excitatory inputs, turning Ih on
+soma BIcl = new IClamp(0.5)
+BIcl.del = 30
+BIcl.dur = 50
+//BIcl.amp = -1
+BIcl.amp = 0
+
+
+load_file("Bahl_std.ses")
