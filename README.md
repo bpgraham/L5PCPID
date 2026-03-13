@@ -10,7 +10,7 @@ This folder contains NEURON code for the simulations presented in:
 
 
 
-Graham, Bruce P. and Kay, Jim W. and Phillips, William A. (2025). Context-sensitive processing in a model neocortical pyramidal cell with two sites of input integration. Neural Computation 37:588-634. https://doi.org/10.1162/neco\_a\_01739
+Graham, Bruce P. and Kay, Jim W. and Phillips, William A. (2025). Context-sensitive processing in a model neocortical pyramidal cell with two sites of input integration. Neural Computation 37:588-634. https://doi.org/10.1162/neco_a_01739
 
 
 
