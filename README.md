@@ -4,7 +4,9 @@ Code for simulating L5 pyramidal cells and analysing results using PID.
 
 
 
-**Bahl2012:** this folder contains NEURON code for the simulations presented in
+## Bahl2012
+
+This folder contains NEURON code for the simulations presented in:
 
 
 
